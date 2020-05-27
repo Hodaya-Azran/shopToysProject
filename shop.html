@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>click TOYS</title>
+
+    <link href="home.css" rel="stylesheet" />
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="jquery-ui.js"></script>
+
+    <script>
+        var games = [
+            {
+                categoryName: "בנים",
+                products: [
+                    { id: 1, name: "כבאית", src: "picture/\בנים/\כבאית.jpg", price: 150 },
+                    { id: 2, name: "טרקטור", src: "picture\\בנים\\טרקטור.jpg", price: 70 },
+                    { id: 3, name: "משטרה", src: "picture\\בנים\\משטרה.jpg", price: 200 },
+                    // {id:4,name:"משאית",src:""},
+                    { id: 5, name: "מוסך מכוניות", src: "picture\\בנים\\מוסך מכוניות.jpg", price: 220 },
+                    { id: 6, name: "כדורגל", src: "picture\\בנים\\כדורגל.jpg", price: 40 },
+                    //{id:7,name:"סל + כדורסל",src:""}
+                ],
+            },
+            {
+                categoryName: "בנות",
+                products: [
+                    { id: 10, name: "בובת ניו-יורק", src: "picture\\בנות\\בובת ניו-יורק.jpg", price: 200 },
+                    { id: 11, name: "עגלה לבובה", src: "picture\\בנות\\עגלה לבובה.jpg", price: 300 },
+                    { id: 12, name: "פינת מטבח", src: "picture\\בנות\\פינת מטבח.jpg", price: 450 },
+                    { id: 13, name: "בית בובות", src: "picture\\בנות\\בית הבובות.jpg", price: 550 },
+                    { id: 14, name: "ערכת טיפוח", src: "picture\\בנות\\ערכת טיפוח.jpg", price: 150 },
+                ],
+            },
+            {
+                categoryName: "משחקי קופסא",
+                products: [
+                    { id: 20, name: "פאזל", src: "picture\\קופסא\\פזאל.jpg", price: 250 },
+                    // { id: 21, name: "מונופול", src: "picture\\קופסא\\מונופול.jpg", price: 180 },
+                    { id: 22, name: "טאקי", src: "picture\\קופסא\\טאקי.jpg", price: 80 },
+                    { id: 23, name: "אנדרלמוסיה", src: "picture\\קופסא\\אנדרלמוסיה.jpg", price: 320 },
+                    // { id: 24, name: "רייס", src: "picture\\קופסא\\רייס.jpg", price: 60 },
+                    { id: 25, name: "רמיקוב", src: "picture\\קופסא\\רמיקוב.jpg", price: 150 },
+                    { id: 26, name: "שחמט", src: "picture\\קופסא\\שחמט.jpg", price: 130 },
+                ],
+            },
+            {
+                categoryName: "משחקים אלקטרונים",
+                products: [
+                    // { id: 30, name: "קונסלת משחקים", src: "picture\\אלקטרוני\\קונסלת משחקים.jpg", price: 650 },
+                    { id: 31, name: "מכונית שלט", src: "picture\\אלקטרוני\\מכונית על שלט.jpg", price: 350 },
+                    { id: 32, name: "רחפן", src: "picture\\אלקטרוני\\רחפן.jpg", price: 4000 },
+                    { id: 33, name: "אוברבורד", src: "picture\\אלקטרוני\\הוברבורד.jpg", price: 1500 },
+                    { id: 33, name: "אוקי טוקי", src: "picture\\אלקטרוני\\אוקי טוקי.jpg", price: 150 },
+                    { id: 33, name: "קופה רושמת", src: "picture\\אלקטרוני\\קופה רושמת.jpg", price: 190 },
+                ],
+            },
+            {
+                categoryName: "משחקי הרכבה",
+                products: [
+                    { id: 40, name: "מגנטים", src: "picture\\הרכבה\\מגנטים.jpg", price: 200 },
+                    // { id: 41, name: "קשקשים", src: "picture\\הרכבה\\קשקשים.jpg", price: 100 },
+                    { id: 42, name: "קליקס", src: "picture\\הרכבה\\קליקס.jpg", price: 120 },
+                    { id: 43, name: "קפלה", src: "picture\\הרכבה\/קפלה.jpg", price: 150 },
+                    { id: 44, name: "לגו", src: "picture\\הרכבה\\לגו.jpg", price: 210 },
+                    { id: 44, name: "מקליקונים", src: "picture\\הרכבה\\מקליקונים.jpg", price: 220 },
+                ],
+            },
+        ];
+        var category = games.length;
+        var handBag = [];
+        var flag = 1;
+        var productInCategory;
+        var maxMoney = 0;
+        var sumBag = 0;
+        var isMoreOne = 0;
+        var isOver = 0;
+
+        $(document).ready(function () {
+
+            //יצירת תפריט חנות
+            function creatMenu() {
+                var ul = $('<ul/>');
+                for (var i = 0; i < category; i++) {
+                    //שם קטגוריה
+                    var li = $('<li/>');
+                    $('<a/>', {
+                        html: games[i].categoryName,
+                    }).appendTo(li);
+                    $(ul).append(li);
+                    $('#menu').append(ul);
+                }
+
+                for (var i = 0; i < category; i++) {
+                    var div = $('<div/>', {
+                        id: "div" + i,
+                    });
+                    productInCategory = games[i].products.length;
+                    for (var j = 0; j < productInCategory; j++) {
+                        //מוצר
+                        var item = $('<div/>', {
+                            class: "children",
+                            value: games[i].categoryName,
+                            'data-name': games[i].products[j].name,
+                        });
+
+                        //תמונה
+                        var divImg = $('<div/>');
+                        $('<img/>', {
+                            src: "./" + games[i].products[j].src,
+                        }).appendTo(divImg);
+                        item.append(divImg);
+
+                        //שם מוצר + מחיר
+                        $('<p/>', {
+                            html: games[i].products[j].name + ":   " + games[i].products[j].price + ".00",
+                            'data-price': games[i].products[j].price,
+                        }).appendTo(item);
+
+                        //מינוס
+                        $('<input/>', {
+                            value: "-",
+                            class: "minus",
+                            type: "button",
+                            //disabled: "disabled"
+                        }).appendTo(item);
+
+                        //כמות
+                        $('<input/>', {
+                            type: "number",
+                            class: "input",
+                            // disabled: "disabled",
+                            value: "0",
+                        }).appendTo(item);
+
+                        //פלוס
+                        $('<input/>', {
+                            value: "+",
+                            class: "plus",
+                            type: "button",
+                            // disabled: "disabled",
+                        }).appendTo(item);
+
+                        //סה"כ
+                        $('<p/>', {
+                            class: "sum",
+                            html: games[i].products[j].price + '.00',
+                        }).appendTo(item);
+                        $(item).children('.sum').hide();
+
+                        //הוסף לסל
+                        $('<input/>', {
+                            value: "הוסף לסל",
+                            class: "addToBag",
+                            type: "button",
+                            // disabled: "disabled",
+                        }).appendTo(item);
+
+                        div.append(item);
+                    }
+                    $("#menu").append(div);
+
+                }
+                //הוספת קישורים לDIV
+                for (var i = 0; i < $('#menu li').length; i++) {
+                    $('#menu li a').eq(i).attr('href', "#" + $("#menu").children('div').eq(i).prop('id'));
+                }
+                setTimeout(() => {
+
+                    $("#menu").tabs({
+                        event: "mouseover"
+                    });
+                }, 1000);
+                $("#menu li:first").css('background-color', '#dedede');
+            };
+            creatMenu();
+            //הדגשת התג הנוכחי שעליו עומדים
+            $('#menu li').mouseover(function () {
+                $(this).siblings().css('background-color', '#f6f6f6');
+                $(this).css('background-color', '#dedede');
+                ($(this).children('a')).trigger('mouseover');
+            })
+            //יצירת סל קניות
+            function creatBag() {
+                //סל קניות
+                $('<section/>', {
+                    html: "הסל קניות שלך ריק"
+                }).appendTo("#BagScream");
+
+                //המשך לקנות
+                $('<input/>', {
+                    type: "button",
+                    value: "המשך לקנות",
+                    id: "ContinueShopping",
+                }).appendTo("#BagScream");
+
+                //תשלום
+                $('<input/>', {
+                    type: "button",
+                    value: "לתשלום",
+                    id: "toPay",
+                }).appendTo("#BagScream");
+                $('<input/>', {
+                    type: 'button',
+                    id: 'removeAllBag',
+                    value: 'רוקן את הסל',
+                }).appendTo("#BagScream");
+                $('<p/>', {
+                    id: 'sumAllBag',
+                }).appendTo("#BagScream");
+
+                $('#BagScream #sumAllBag').html(sumBag + '.00');
+                if (sumBag == 0)
+                    $('#BagScream #sumAllBag').hide()
+                else $('#BagScream #sumAllBag').show();
+
+            }
+            creatBag();
+
+            //בחירת מוצרים SELECTED
+            //עי כך יהיה נתן לשים כמות ולהוסיף לסל
+            $(function () {
+                $("#menu div").not($("#menu div").children()).selectable({
+                    stop: function () {
+                        $('.children.ui-selected').children('.input').val(1);
+                        // $('.children.ui-selected').children('.sum').html($('.children.ui-selected p').not('.sum').attr('data-price')+'.00');
+                    }
+                });
+
+
+            });
+
+            //הצגת הודעת דיאלוג בכמה ברצוני לקנות הפעם אחת
+            $("#shopingBag img").one('click', function () {
+                var div = $('<div/>');
+                $('<p/>', {
+                    html: 'בכמה תרצו לקנות?'
+                }).appendTo(div);
+                $('<p/>', {
+                    html: ' נא הכניסו את לתיבת הטקסט את המחיר המקסימאלי שברצונכם לקנות הפעם.'
+                }).appendTo(div);
+                maxMoney = $('<input/>', {
+                    type: "number",
+                    placeholder: 'מחיר מקסימאלי'
+                }).appendTo(div);
+                $('<input/>', {
+                    type: 'button',
+                    id: 'input',
+                    value: 'אישור',
+                }).appendTo(div);
+                div.dialog();
+                $('div.ui-dialog-content.ui-widget-content #input').click(function () {
+                    if (parseInt(maxMoney.val()) > 0) {
+                        $('.ui-button').trigger('click');
+
+                        $('<div/>', {
+                            id: 'progressbar',
+                        }).appendTo("#BagScream");
+
+                        isMoreOne = 1;
+                        maxMoney = parseInt(maxMoney.val());
+                        $(function () {
+                            $("#progressbar").progressbar({
+                                value: (sumBag * 100) / maxMoney,
+                            });
+                        });
+                        if (maxMoney - sumBag <= 0 && !isOver) {
+                            OverMaxMoney();
+                            isOver = 1;
+                        }
+                        $('#BagScream #sumAllBag').html(sumBag + '.00');
+                        if (sumBag == 0)
+                            $('#BagScream #sumAllBag').hide()
+                        else $('#BagScream #sumAllBag').show();
+
+                    }
+                })
+            })
+
+            //הוספת כמות
+            $("#menu div div .plus").click(function () {
+                if ($(this).parent().hasClass('ui-selected')) {
+                    $(this).siblings('input[type=number]').val(parseInt($(this).siblings('input[type=number]').val()) + 1);
+                    $(this).siblings('.sum').html($(this).siblings('input[type=number]').val());
+                    $(this).siblings('.sum').html(parseInt($(this).siblings('p').not('.sum').attr('data-price')) * parseInt($(this).siblings('input[type=number]').val()) + ".00");
+                }
+            });
+
+            //הפחתת כמות
+            $("#menu div div .minus").click(function () {
+                if ($(this).parent().hasClass('ui-selected')) {
+                    if ($(this).siblings('input[type=number]').val() > 0) {
+                        $(this).siblings('input[type=number]').val(parseInt($(this).siblings('input[type=number]').val()) - 1);
+                        $(this).siblings('.sum').html(parseInt($(this).siblings('p').not('.sum').attr('data-price')) * parseInt($(this).siblings('input[type=number]').val()) + ".00");
+                    }
+                    if ($(this).siblings('input[type=number]').val() == 0) {
+                        $(this).parent().removeClass('ui-selected');
+                        $(this).siblings('.sum').html($(this).siblings('p').not('.sum').attr('data-price') + '.00');
+                    }
+
+                }
+            });
+
+            //כמות מוצרים בסל קניות
+            $("#shopingBag div").html(handBag.length);
+            if ($("#shopingBag div").html() == "0")
+                $("#shopingBag div").hide();
+            else $("#shopingBag div").show();
+
+            //הצגת סל
+            $("#shopingBag img").click(function () {
+                $("#menu").hide();
+                $("#BagScream").show();
+                if (maxMoney - sumBag <= 0 && !isOver) {
+                    OverMaxMoney();
+                    isOver = 1;
+                }
+            });
+
+            //המשך לקנות
+            $("#BagScream #ContinueShopping").click(function () {
+                $("#menu").show();
+                $("#BagScream").hide();
+            });
+
+            //הוסף לסל +הסר מהסל + פלוס + מינוס
+            $("#menu div div .addToBag").click(function () {
+                if ($(this).parent().hasClass('ui-selected')) {
+                    if (handBag.length > 0) {
+                        for (var s = 0; s < handBag.length; s++)
+                            if (handBag[s].name == $(this).parent().attr('data-name')) {
+                                sumBag += parseInt($(this).siblings('.input').val()) * parseInt($(this).siblings('p').not('.sum').attr('data-price'))
+                                handBag[s].amount = handBag[s].amount + parseInt($(this).siblings('.input').val());
+                                $("#BagScream section .children").eq(s).children('.input').val(handBag[s].amount);
+                                $("#BagScream section .children").eq(s).children('.sum').html(handBag[s].amount * parseInt($(this).siblings('p').not('.sum').attr('data-price')) + '.00');
+                                $(this).parent().removeClass('ui-selected');
+                                if (isMoreOne) {
+                                    $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                                }
+
+                                $('#BagScream #sumAllBag').html(sumBag + '.00');
+                                if (sumBag == 0)
+                                    $('#BagScream #sumAllBag').hide()
+                                else $('#BagScream #sumAllBag').show();
+                                return;
+                            }
+                    }
+                    if (flag) {
+                        $("#BagScream section").empty();
+                        $("#BagScream section").css('padding', '0%');
+                        flag = 0;
+                    }
+                    var i;
+                    for (i = 0; i < games.length && games[i].categoryName != $(this).parent().attr('value'); i++);
+                    var prod = games[i].products[parseInt($(this).parent().siblings().length) - parseInt($(this).parent().nextUntil().length)];
+                    var obj = {
+                        id: prod.id,
+                        name: prod.name,
+                        src: './' + prod.src,
+                        price: prod.price,
+                        amount: parseInt($(this).siblings('.input').val()),
+                    }
+                    sumBag += obj.amount * obj.price;
+                    if (isMoreOne) {
+                        $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                    }
+
+                    $('#BagScream #sumAllBag').html(sumBag + '.00');
+                    if (sumBag == 0)
+                        $('#BagScream #sumAllBag').hide()
+                    else $('#BagScream #sumAllBag').show();
+
+                    var item = $('<div/>', {
+                        class: 'children',
+                        'data-price': obj.price,
+                    });
+                    var div = $('<div/>');
+                    $('<img/>', {
+                        src: obj.src,
+                    }).appendTo(div);
+                    div.appendTo(item);
+                    $('<p/>', {
+                        html: obj.name + " :  " + obj.price + '.00',
+                    }).appendTo(item);
+                    $('<input/>', {
+                        type: 'button',
+                        class: 'minus',
+                        value: '-',
+                        click: () => {
+                            if (parseInt($(event.target).siblings('input[type=number]').val()) > 1) {
+                                $(event.target).siblings('input[type=number]').val(parseInt($(event.target).siblings('input[type=number]').val()) - 1);
+                                $(event.target).siblings('.sum').html(parseInt($(event.target).parent().attr('data-price')) * parseInt($(event.target).siblings('.input').val()) + '.00');
+                                sumBag -= parseInt($(event.target).parent().attr('data-price'));
+                                $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                                $('#BagScream #sumAllBag').html(sumBag + '.00');
+                                if (sumBag == 0)
+                                    $('#BagScream #sumAllBag').hide()
+                                else $('#BagScream #sumAllBag').show();
+                            }
+
+                        }
+                    }).appendTo(item);
+                    $('<input/>', {
+                        type: 'number',
+                        class: 'input',
+                        value: obj.amount,
+                    }).appendTo(item);
+                    $('<input/>', {
+                        type: 'button',
+                        class: 'plus',
+                        value: '+',
+                        click: () => {
+                            $(event.target).siblings('input[type=number]').val(parseInt($(event.target).siblings('input[type=number]').val()) + 1)
+                            $(event.target).siblings('.sum').html(parseInt($(event.target).parent().attr('data-price')) * parseInt($(event.target).siblings('.input').val()) + '.00');
+                            sumBag += parseInt($(event.target).parent().attr('data-price'));
+                            $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                            $('#BagScream #sumAllBag').html(sumBag + '.00');
+                            if (sumBag == 0)
+                                $('#BagScream #sumAllBag').hide()
+                            else $('#BagScream #sumAllBag').show();
+                        }
+                    }).appendTo(item);
+                    $('<p/>', {
+                        class: 'sum',
+                        html: obj.amount * obj.price + '.00',
+                    }).appendTo(item);
+                    $('<input/>', {
+                        type: 'button',
+                        class: 'removFronBag',
+                        value: 'הסר מהסל',
+                        click: () => {
+                            sumBag -= parseInt($(event.target).parent().attr('data-price'));
+                            $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                            $(event.target).parent().remove();
+                            handBag.pop($(event.target).parent());
+                            $("#shopingBag div").html(handBag.length);
+                            if ($("#shopingBag div").html() == "0")
+                                $("#shopingBag div").hide();
+                            else $("#shopingBag div").show();
+                            if (handBag.length == 0) {
+                                $('#BagScream section').html("הסל קניות שלך ריק");
+                                $('#BagScream section').css('padding', '10%');
+                                flag = 1;
+                            }
+                            $('#BagScream #sumAllBag').html(sumBag + '.00');
+                            if (sumBag == 0)
+                                $('#BagScream #sumAllBag').hide()
+                            else $('#BagScream #sumAllBag').show();
+
+                        }
+                    }).appendTo(item);
+                    $("#BagScream section").append(item);
+                    handBag.push(obj);
+                    //כמות מוצרים בסל קניות
+                    $("#shopingBag div").html(handBag.length);
+                    if ($("#shopingBag div").html() == "0")
+                        $("#shopingBag div").hide();
+                    else $("#shopingBag div").show();
+                    $(this).siblings('.input').val(0);
+                    $(this).parent().removeClass('ui-selected');
+                    $(this).siblings('.sum').html($(this).siblings('p').not('.sum').attr('data-price') + '.00');
+
+                }
+            });
+            //רוקן את הסל
+            $('#BagScream #removeAllBag').click(function () {
+                if (handBag.length > 0) {
+                    var div = $('<div/>');
+                    $('<p/>', {
+                        html: 'לרוקן את הסל?'
+                    }).appendTo(div);
+                    $('<p/>', {
+                        html: 'כאשר תלחץ על אישור המוצרים יוסרו לצמיתות. האם אתה בטוח שברצונך לרוקן את הסל?'
+                    }).appendTo(div);
+                    $('<button/>', {
+                        html: 'אישור'
+                    }).appendTo(div);
+                    $('<input/>', {
+                        type: 'button',
+                        value: 'ביטול'
+                    }).appendTo(div);
+                    $(function () {
+                        div.dialog();
+                    });
+                    sumBag = 0;
+                    $('.ui-dialog-content.ui-widget-content button').click(function () {
+                        $('.ui-button').trigger('click');
+                        handBag = [];//למחוק את המערך
+                        //לרוקן את המוצרים מהמסך
+                        $('#BagScream section').empty();
+                        $('#BagScream section').html("הסל קניות שלך ריק");
+                        $('#BagScream section').css('padding', '10%');
+                        flag = 1;
+                        //לאפס את מונה כמות מוצרים
+                        $("#shopingBag div").html(handBag.length);
+                        $("#shopingBag div").hide();
+                        $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                        $('#BagScream #sumAllBag').html(sumBag + '.00');
+                        if (sumBag == 0)
+                            $('#BagScream #sumAllBag').hide()
+                        else $('#BagScream #sumAllBag').show();
+
+                    });
+                    $('.ui-dialog-content.ui-widget-content input').click(function () {
+                        $('.ui-button').trigger('click');
+                    });
+                    isOver = 0;
+                }
+            })
+
+            //תשלום
+            $('#BagScream #toPay').click(function () {
+                if (handBag.length > 0) {
+                    var div = $('<div/>');
+                    $('<p/>', {
+                        html: 'תודה שקניתם אצלינו :)'
+                    }).appendTo(div);
+                    $('<p/>', {
+                        html: 'תשלח אלכם הודעה ברגע שהמוצרים שהזמנתם יגיעו לסניף הדואר. <br/> נ.ב. התשלום על המוצרים יתבצע מול סניף הדואר שלכם בעת קבלת המוצרים.'
+                    }).appendTo(div);
+                    $('<input/>', {
+                        value: 'אישור',
+                        type: 'button',
+                        id: 'input',
+                    }).appendTo(div);
+                    $(function () {
+                        div.dialog();
+                    });
+                    $('div.ui-dialog-content.ui-widget-content #input').click(function () {
+                        handBag = [];
+                        sumBag = 0;
+                        $('#BagScream section').empty();
+                        $('#BagScream section').html("הסל קניות שלך ריק");
+                        $('#BagScream section').css('padding', '10%');
+                        $("#shopingBag div").html(handBag.length);
+                        $("#shopingBag div").hide();
+                        $('.ui-button').trigger('click');
+                        flag = 1;
+                        $("#progressbar").progressbar("option", "value", (sumBag * 100) / maxMoney);
+                        $('#BagScream #sumAllBag').html(sumBag + '.00');
+                        if (sumBag == 0)
+                            $('#BagScream #sumAllBag').hide()
+                        else $('#BagScream #sumAllBag').show();
+                    })
+                }
+
+            });
+
+
+            //התראה בהודעת דיאלוג כאשא חרגתי מהסכום שצוין בהתחלה
+            function OverMaxMoney() {
+                var div = $('<div/>');
+                $('<p/>', {
+                    html: 'שים לב!'
+                }).appendTo(div);
+                $('<p/>', {
+                    html: 'חרגת מהסכום שהקצבת לקניה זו.'
+                }).appendTo(div);
+                $('<input/>', {
+                    type: 'button',
+                    id: 'input',
+                    value: 'אישור',
+                }).appendTo(div);
+                div.dialog();
+                $('div.ui-dialog-content.ui-widget-content #input').click(function () {
+                    $('.ui-button').trigger('click');
+                });
+            }
+
+
+            //בעת מעבר על המוצרים רואים את המחיר
+            $('#menu div div').mouseover(function () {
+                $(this).children('.sum').show();
+            });
+            $('#menu div div').mouseleave(function () {
+                $(this).children('.sum').hide();
+            });
+
+        })
+
+    </script>
+</head>
+
+<body dir="rtl">
+
+    <header>
+        <img src="picture/logo.png" />
+    </header>
+
+    <div id="menu"></div>
+    <div id="shopingBag">
+        <img src="picture/shopping1.png" />
+        <div></div>
+    </div>
+    <div id="BagScream"></div>
+</body>
+
+</html>
